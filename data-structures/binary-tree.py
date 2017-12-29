@@ -78,6 +78,19 @@ class IterativeTraversal(object):
                     if node.left: stack.append(node.left)
 
         return visited
+    
+    @staticmethod
+    def tree_height(root):
+        queue, height = [root], 0
+        while queue:
+            nodes_at_this_level = len(queue)
+            if nodes_at_this_level == 0: break
+            height += 1
+            for _ in range(nodes_at_this_level):
+                node = queue.pop(0)
+                if node.left:  queue.append(node.left)
+                if node.right: queue.append(node.right)
+        return height
 
 class RecursiveTraversal(object):
     @staticmethod
@@ -102,18 +115,25 @@ class RecursiveTraversal(object):
         result.append(node.value)
         return result
 
+    @staticmethod
+    def tree_height(node):
+        if not node: return 0
+        return max(RecursiveTraversal.tree_height(node.left), RecursiveTraversal.tree_height(node.right)) + 1
+
 
 if __name__ == '__main__':
     root = BinaryTreeNode(1, BinaryTreeNode(2, BinaryTreeNode(4), BinaryTreeNode(5)), BinaryTreeNode(3, None, BinaryTreeNode(6)))
     print(root)
 
     print('-- Iterative Solutions')
+    print('Height', IterativeTraversal.tree_height(root))
     print('BFS', IterativeTraversal.bfs(root))
     print('DFS Preorder', IterativeTraversal.dfs_preorder(root))
     print('DFS Inorder', IterativeTraversal.dfs_inorder(root))
     print('DFS Postorder', IterativeTraversal.dfs_postorder(root))
 
     print('-- Recursive Solutions')
+    print('Height', RecursiveTraversal.tree_height(root))
     print('DFS Preorder', RecursiveTraversal.dfs_preorder(root))
     print('DFS Inorder', RecursiveTraversal.dfs_inorder(root))
     print('DFS Inorder', RecursiveTraversal.dfs_postorder(root))
