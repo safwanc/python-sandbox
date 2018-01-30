@@ -92,6 +92,21 @@ class IterativeTraversal(object):
                 if node.right: queue.append(node.right)
         return height
 
+    @staticmethod
+    def serialize(root):
+        queue, visited = [root], []
+        while queue:
+            node = queue.pop()
+            if not node:
+                visited.append(None)
+            else:
+                visited.append(node.value)
+                queue.insert(0, node.left)
+                queue.insert(0, node.right)
+        return visited
+        
+
+
 class RecursiveTraversal(object):
     @staticmethod
     def dfs_preorder(node, result=list()):
@@ -101,6 +116,7 @@ class RecursiveTraversal(object):
         RecursiveTraversal.dfs_preorder(node.right, result)
         return result
 
+    @staticmethod
     def dfs_inorder(node, result=list()):
         if not node: return
         RecursiveTraversal.dfs_inorder(node.left, result)
@@ -108,6 +124,7 @@ class RecursiveTraversal(object):
         RecursiveTraversal.dfs_inorder(node.right, result)
         return result
 
+    @staticmethod
     def dfs_postorder(node, result=list()):
         if not node: return
         RecursiveTraversal.dfs_postorder(node.left, result)
@@ -119,6 +136,14 @@ class RecursiveTraversal(object):
     def tree_height(node):
         if not node: return 0
         return max(RecursiveTraversal.tree_height(node.left), RecursiveTraversal.tree_height(node.right)) + 1
+
+    @staticmethod
+    def deserialize(array, root=None, i=0):
+        if i < len(array) and array[i] is not None:
+            root = BinaryTreeNode(array[i])
+            root.left = RecursiveTraversal.deserialize(array, root.left, 2 * i + 1)
+            root.right = RecursiveTraversal.deserialize(array, root.right, 2 * i + 2)
+        return root
 
 
 if __name__ == '__main__':
@@ -137,3 +162,9 @@ if __name__ == '__main__':
     print('DFS Preorder', RecursiveTraversal.dfs_preorder(root))
     print('DFS Inorder', RecursiveTraversal.dfs_inorder(root))
     print('DFS Inorder', RecursiveTraversal.dfs_postorder(root))
+
+    print('-- Serialize/Deserialize')
+    array = IterativeTraversal.serialize(root)
+    print('Serialize', array)
+    tree = RecursiveTraversal.deserialize(array)
+    print('Deserialize', tree)

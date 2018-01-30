@@ -5,7 +5,6 @@ Runtime: O(n log(n)) & Space: O(n) ..if not slicing all the way to hell
 
 def merge_sort(array):
     if len(array) > 1:
-        print('Split', array)
         midpoint = len(array) // 2
         left, right = array[:midpoint], array[midpoint:]
 
