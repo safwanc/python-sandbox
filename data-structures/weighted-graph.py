@@ -1,5 +1,5 @@
 import operator
-from heapq import *
+import heapq
 from collections import defaultdict
 
 class WeightedGraph(object):
@@ -18,16 +18,16 @@ class WeightedGraph(object):
         self.weights[(node2, node1)] = weight
     
     def dijkstras(self, from_node):
-        queue, visited, shortest = list(), set(), defaultdict(lambda: float('inf'))
-        queue.append((0, from_node))
+        heap, visited, shortest = list(), set(), defaultdict(lambda: float('inf'))
+        heap.append((0, 'AB'))
         
-        while queue:
-            cost, node = heappop(queue)
+        while heap:
+            cost, node = heapq.heappop(heap)
             if node not in visited:
                 visited.add(node)
                 shortest[node] = min(shortest[node], cost)
                 for neighbor in self.graph[node]:
-                    heappush(queue, (cost + self.weights[(node, neighbor)]))
+                    heapq.heappush(heap, (cost + self.weights[(node, neighbor)]))
         
         return shortest
 
