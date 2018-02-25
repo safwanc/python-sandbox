@@ -1,24 +1,38 @@
+array = [1, 2, 3, 1]
+
 def get_all_permutations(array):
-    if len(array) <= 1: return set((array[0],))
+    if len(array) <= 1:
+        return [array]
 
-    all_items_except_last = array[:-1]
-    last_item = array[-1]
+    all_except_last, last = array[:-1], array[-1]
 
-    all_permutations = get_all_permutations(all_items_except_last)
-    
-    permutations = set()
-    for permutation in all_permutations:
-        for i in range(len(permutation) + 1):
-            permutations.add(permutation[:i] + [last_item] + permutation[i:])
-    return permutations
+    result = list()
+    perms = get_all_permutations(all_except_last)
+    for perm in perms:
+        for i in range(len(all_except_last) + 1):
+            result.append(perm[:i] + [last] + perm[i:])
+    return result
 
-words = ['ball', 'area', 'lead', 'lady']
+def iterative_permutations(array):
+    perms = [[]]
 
-for permutation in get_all_permutations(words):
-    print(permutation)
+    for num in array:
+        new = list()
+        for perm in perms:
+            for i in range(len(perm) + 1):
+                new.append(perm[:i] + [num] + perm[i:])
+        perms = new
+        print(perms)
+
+    return perms
+
+
+perms = get_all_permutations(array)
+print(len(perms), perms)
+
+perms = iterative_permutations(array)
+print(len(perms), perms)
 
 import itertools
-perms = list(itertools.permutations(words))
-print(len(perms))
-
-    
+perms = list(itertools.permutations(array))
+print(len(perms), perms)

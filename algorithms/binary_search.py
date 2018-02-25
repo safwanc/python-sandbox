@@ -13,21 +13,12 @@ def binary_search_recursive(target, numbers):
         return True
 
 def binary_search_iterative(target, numbers):
-    left_index = -1
-    right_index = len(numbers)
-
-    while left_index + 1 < right_index:
-        distance = right_index - left_index
-        halfway = distance // 2
-        middle_index = left_index + halfway
-        middle_value = numbers[middle_index]
-
-        if target == middle_value:
-            return True
-        elif target < middle_value:
-            right_index = middle_index
-        else:
-            left_index = middle_index
+    l, h = 0, len(numbers) - 1
+    while l <= h:
+        m = (l + h) // 2
+        if numbers[m] < target: l = m + 1
+        elif numbers[m] > target: h = m - 1
+        else: return True
     
     return False
 
